@@ -1,5 +1,8 @@
 class VigenereCipher:
 
+  def __init__(self):
+    self.key = None
+
   def set_key(self, key: str):
     """Public method to set the key, which is used for both encoding and decoding"""
 
@@ -35,8 +38,13 @@ class VigenereCipher:
   def _transform(self, message: str, mode: str) -> str:
     """Main method used to transform the message based on the mode"""
 
-    result = ""
+    # Check mode and key before processing
+    if mode not in ['encode', 'decode']:
+      raise ValueError("Mode must be either 'encode' or 'decode'")
+    if self.key is None:
+      raise ValueError("Key must be set before encoding")
 
+    result = ""
     key_index = 0
     for ch in message:
 
@@ -44,8 +52,8 @@ class VigenereCipher:
         result += ch
         continue
 
-      isUpper = ch.isupper()
-      if isUpper:
+      is_upper = ch.isupper()
+      if is_upper:
         ch = ch.lower()
 
       key_char = self.key[key_index]
@@ -55,7 +63,7 @@ class VigenereCipher:
       if key_index >= len(self.key):
         key_index = 0
 
-      if isUpper:
+      if is_upper:
         new_character = new_character.upper()
 
       result += new_character 
@@ -71,17 +79,18 @@ class VigenereCipher:
     return self._transform(message, mode = 'decode')
 
 
+if __name__ == "__main__":
 
-encoder_decoder = VigenereCipher()
-encoder_decoder.set_key("abc")
+  encoder_decoder = VigenereCipher()
+  encoder_decoder.set_key("abc")
 
-message = "abczz"
-encoded_message = encoder_decoder.encode(message)
-assert (encoded_message == "aceza")
-print(f"Encoded message: {encoded_message}")
+  message = "abczz"
+  encoded_message = encoder_decoder.encode(message)
+  assert (encoded_message == "aceza")
+  print(f"Encoded message: {encoded_message}")
 
-decoded_message = encoder_decoder.decode(encoded_message)
-assert (decoded_message == message)
-print(f"Decoded message: {decoded_message}")
+  decoded_message = encoder_decoder.decode(encoded_message)
+  assert (decoded_message == message)
+  print(f"Decoded message: {decoded_message}")
 
-assert message == decoded_message
+  assert message == decoded_message
