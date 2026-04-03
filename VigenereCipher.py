@@ -94,3 +94,21 @@ if __name__ == "__main__":
   print(f"Decoded message: {decoded_message}")
 
   assert message == decoded_message
+
+
+  # Additional test with a longer message
+
+  encoder_decoder.set_key("hello")
+  message = """In the quiet village of Eldenwood, the townspeople gathered every evening
+                    to share stories by the fire. Children listened with wide eyes as elders
+                    recounted tales of ancient forests, hidden treasures, and heroic deeds.
+                    The wind whispered through the trees, carrying secrets of the past,
+                    while the stars above twinkled like distant lanterns. Life moved gently,
+                    yet mysteries lingered, waiting for someone brave enough to uncover them.
+                    Each night brought hope and curiosity in equal measure."""
+
+  encoded_message = encoder_decoder.encode(message)
+  print(f"Encoded message: {encoded_message}")
+  decoded_message = encoder_decoder.decode(encoded_message)
+  print(f"Decoded message: {decoded_message}")
+  assert message == decoded_message

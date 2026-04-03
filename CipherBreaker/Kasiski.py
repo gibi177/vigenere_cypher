@@ -1,8 +1,8 @@
 import sys
 import os
-sys.path.append(os.path.abspath(".."))
-
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from utils import factor
+
 class Kasiski:
   def __init__(self, text: str):
     self.text = text
@@ -112,7 +112,7 @@ class Kasiski:
       for distance in dist_list:
         all_factors.extend(factor(distance)) # factor() comes from utils.py
 
-    return all_factors
+    return [f for f in all_factors if f >= 3] # Filter out factors less than 3 -> unlikely key lengths
 
 
   def _likely_key_lengths(self, all_factors: list[int]) -> list[int]:
@@ -158,8 +158,29 @@ class Kasiski:
 
 
 if __name__ == "__main__":  
-  cipher_text = "Abcabcabc"
+  true_key_length = 5
+  true_key = "hello"
+
+  true_message = """In the quiet village of Eldenwood, the townspeople gathered every evening
+                    to share stories by the fire. Children listened with wide eyes as elders
+                    recounted tales of ancient forests, hidden treasures, and heroic deeds.
+                    The wind whispered through the trees, carrying secrets of the past,
+                    while the stars above twinkled like distant lanterns. Life moved gently,
+                    yet mysteries lingered, waiting for someone brave enough to uncover them.
+                    Each night brought hope and curiosity in equal measure."""
+  
+
+  cipher_text = """Pr ess xytph cmwwoni zq Sshpykvso, evl xzhbztpzdsi rlhoicpr lzpcm lzpywuk
+                    ez goecp gasctsz fj evl jtcs. Jltwryiy wwzxpysk atev dmop sfid lg lpopfz
+                    vpncbrepr aewpg vj lyqpiye tvvpdhz, ltorlr ecshwfcsz, eyo vlvztq kipog.
+                    Alp hwuh hswztpcsk xsccbks evl xcpsz, glcffmyr glgcphz sq evl tldh,
+                    dltws alp dhhvd lpvzp ekprvwsk ptvs kmdeoux wlbaicyg. Smqp avzpo ulrewm,
+                    fie xmzxpcwlw wtbnicpr, detewuk qzf zsxpcui mcoci pycbks ec brnzjlv esst.
+                    Ilnv umrsh ivzfuox szdl eyo qbvtzgpxj tb luflz tildiyi."""  
+
   k = Kasiski(cipher_text)
-  prob_key_lengths = k.find_key_lengths(3)
+  sequence_length = 4
+  prob_key_lengths = k.find_key_lengths(sequence_length)
+  print(f"Likely key lengths for sequence length {sequence_length}:")
   print(prob_key_lengths)
   
