@@ -20,10 +20,6 @@ class FrequencyAttack:
   def __init__(self, ciphertext: str):
     self.ciphertext = ciphertext
 
-  def _clean_text(self) -> str:
-    """Keep only letters A-Z and convert to lowercase."""
-    return ''.join(c.lower() for c in self.ciphertext if c.isalpha())
-
   def _split_into_columns(self, key_length: int) -> list[str]:
     """
     Split ciphertext into key_length groups.
